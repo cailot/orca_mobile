@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       builder: (context, isDark, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Jins Demo',
+          title: 'Orca Demo',
           theme: ThemeData(
             brightness: isDark ? Brightness.dark : Brightness.light,
             useMaterial3: true,
