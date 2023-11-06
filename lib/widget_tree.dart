@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_hello_world/pages/home_page.dart';
+import 'package:flutter_first_hello_world/pages/clazz_list_page.dart';
 import 'package:flutter_first_hello_world/pages/profile_page.dart';
 
 class WidgetTree extends StatefulWidget {
@@ -11,7 +11,7 @@ class WidgetTree extends StatefulWidget {
 
 class _WidgetTreeState extends State<WidgetTree> {
   List<Widget> screens = [
-    const HomePage(),
+    const ClazzListPage(teacherId: 3),
     const ProfilePage(),
   ];
 
@@ -23,8 +23,8 @@ class _WidgetTreeState extends State<WidgetTree> {
       bottomNavigationBar: NavigationBar(
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.subject),
+            label: 'Class List',
           ),
           NavigationDestination(
             icon: Icon(Icons.person),
