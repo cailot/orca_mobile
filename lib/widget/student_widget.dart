@@ -16,17 +16,23 @@ class StudentWidget extends StatefulWidget {
 }
 
 class _StudentWidgetState extends State<StudentWidget> {
+  bool _isSelected = true;
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
-            title: Text(widget.box.name),
-            subtitle: Text(widget.box.id.toString()),
-            value: widget.box.attended,
-            onChanged: (bool? value) {
-              setState(() {
-                widget.box.attended = value!;
-              });
-            },
-          );
+      title: Text(widget.box.studentName),
+      subtitle: Text(widget.box.studentId.toString()),
+      secondary: const Icon(
+        Icons.account_circle_rounded,
+        color: Colors.purple,
+      ),
+      value: _isSelected,
+      onChanged: (bool? value) {
+        setState(() {
+          _isSelected = value!;
+          print('${widget.box.id} is $_isSelected');
+        });
+      },
+    );
   }
 }

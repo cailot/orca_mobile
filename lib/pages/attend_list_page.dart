@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_first_hello_world/api/api.dart';
 import 'package:flutter_first_hello_world/model/clazz_data.dart';
 import 'package:flutter_first_hello_world/model/student_data.dart';
 import 'package:flutter_first_hello_world/widget/student_widget.dart';
 
-class ClazzDetailPage extends StatefulWidget {
-  const ClazzDetailPage({
+class AttendListPage extends StatefulWidget {
+  const AttendListPage({
     super.key,
     required this.box,
   });
@@ -12,11 +13,24 @@ class ClazzDetailPage extends StatefulWidget {
   final ClazzData box;
 
   @override
-  State<ClazzDetailPage> createState() => _ClazzDetailPageState();
+  State<AttendListPage> createState() => _AttendListPageState();
 }
 
-class _ClazzDetailPageState extends State<ClazzDetailPage> {
-  double fontSize = 10.0;
+class _AttendListPageState extends State<AttendListPage> {
+  List<StudentData> _studentList = <StudentData>[];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    API.getAttendList(widget.box.id, '2021-10-01').then((studentList) {
+      setState(() {
+        _studentList = studentList;
+        _isLoading = false;
+      });
+      // print('--- $_studentList');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +38,7 @@ class _ClazzDetailPageState extends State<ClazzDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.box.name,
+          _isLoading ? 'Loading....' : widget.box.name,
           style: const TextStyle(
             color: Colors.white,
           ),
@@ -59,23 +73,17 @@ class _ClazzDetailPageState extends State<ClazzDetailPage> {
         ],
       ),
       body: ListView.builder(
-        itemCount: widget.box.number,
+        itemCount: _studentList.length,
         itemBuilder: (context, index) {
-          // return CheckboxListTile(
-          //   title: Text('James Pham ${index + 1}'),
-          //   subtitle: const Text('130365',),
-          //   value: _isSelected[index],
-          //   onChanged: (bool? value) {
-          //     setState(() {
-          //       _isSelected[index] = value!;
-          //     });
-          //   },
-          // );
           return StudentWidget(
             box: StudentData(
-              id: index,
-              name: 'James Ahn ${index + 1}',
-              attended: true,
+              id: _studentList[index].id,
+              attendDate: _studentList[index].attendDate,
+              status: _studentList[index].status,
+              studentId: _studentList[index].studentId,
+              studentName: _studentList[index].studentName,
+              // name: _studentList[index].name,
+              // attended: true,
             ),
             index: index,
           );
