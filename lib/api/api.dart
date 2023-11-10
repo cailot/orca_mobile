@@ -4,16 +4,16 @@ import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
 class API {
-  static const HOST = 'http://127.0.0.1:8080/api/';
-  static const CLASS_LIST = '${HOST}clazzList/';
-  static const ATTEND_LIST = '${HOST}attendList/';
+  static const kHost = 'http://127.0.0.1:8080/api/';
+  static const kClassList = '${kHost}clazzList/';
+  static const kAttendList = '${kHost}attendList/';
 
   // retrieve Class List
   static Future<List<ClazzData>> getClazzList(int clazzId) async {
     try {
       final response = await http.get(
         Uri.parse(
-          API.CLASS_LIST + clazzId.toString(),
+          API.kClassList + clazzId.toString(),
         ),
       );
       if (response.statusCode == 200) {
@@ -39,11 +39,12 @@ class API {
     try {
       final response = await http.get(
         Uri.parse(
-          '${API.ATTEND_LIST}$clazzId/$date',
+          '${API.kAttendList}$clazzId/$date',
         ),
       );
       if (response.statusCode == 200) {
-        final List<StudentData> studentList = studentDataFromJson(response.body);
+        final List<StudentData> studentList =
+            studentDataFromJson(response.body);
         return studentList;
       } else {
         Fluttertoast.showToast(

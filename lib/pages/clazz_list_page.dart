@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_first_hello_world/api/api.dart';
 import 'package:flutter_first_hello_world/model/clazz_data.dart';
 import 'package:flutter_first_hello_world/widget/clazz_widget.dart';
-import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:convert';
 
 class ClazzListPage extends StatefulWidget {
   const ClazzListPage({super.key, required this.teacherId});
