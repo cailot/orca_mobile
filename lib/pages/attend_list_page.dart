@@ -23,7 +23,7 @@ class _AttendListPageState extends State<AttendListPage> {
   @override
   void initState() {
     super.initState();
-    API.getAttendList(widget.box.id, '2021-10-01').then((studentList) {
+    API.getAttendList(widget.box.id).then((studentList) {
       setState(() {
         _studentList = studentList;
         _isLoading = false;
@@ -78,12 +78,10 @@ class _AttendListPageState extends State<AttendListPage> {
           return StudentWidget(
             box: StudentData(
               id: _studentList[index].id,
-              attendDate: _studentList[index].attendDate,
+              //attendDate: _studentList[index].attendDate,
               status: _studentList[index].status,
               studentId: _studentList[index].studentId,
               studentName: _studentList[index].studentName,
-              // name: _studentList[index].name,
-              // attended: true,
             ),
             index: index,
           );

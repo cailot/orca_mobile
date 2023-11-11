@@ -34,12 +34,11 @@ class API {
   }
 
   // retrieve Student List
-  static Future<List<StudentData>> getAttendList(
-      int clazzId, String date) async {
+  static Future<List<StudentData>> getAttendList(int clazzId) async {
     try {
       final response = await http.get(
         Uri.parse(
-          '${API.kAttendList}$clazzId/$date',
+          '${API.kAttendList}$clazzId',
         ),
       );
       if (response.statusCode == 200) {
