@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_first_hello_world/model/student_data.dart';
 
 class StudentWidget extends StatefulWidget {
-  const StudentWidget({
-    super.key,
-    required this.box,
-    required this.index,
-  });
+  const StudentWidget(
+      {super.key,
+      required this.box,
+      required this.index,
+      required this.onChanged});
 
   final int index;
   final StudentData box;
+  final Function onChanged;
 
   @override
   State<StudentWidget> createState() => _StudentWidgetState();
 }
 
 class _StudentWidgetState extends State<StudentWidget> {
-  bool _isSelected = true;
+  bool _isSelected = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -40,7 +41,11 @@ class _StudentWidgetState extends State<StudentWidget> {
           onChanged: (bool? value) {
             setState(() {
               _isSelected = value!;
-              print('${widget.box.id} is $_isSelected');
+              widget.box.status = _isSelected ? 'Y' : 'N';
+              widget.onChanged(widget.index, widget.box.status);
+              print(
+                '${widget.box.id} is $_isSelected',
+              );
             });
           },
         ),

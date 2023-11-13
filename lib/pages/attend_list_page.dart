@@ -56,14 +56,32 @@ class _AttendListPageState extends State<AttendListPage> {
         actions: [
           IconButton(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Attendance Roll Saved'),
-                  duration: Duration(seconds: 1),
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.deepPurple,
-                ),
-              );
+              List<Map<String, dynamic>> data = [];
+              for (var i = 0; i < _studentList.length; i++) {
+                Map<String, dynamic> statuses = {
+                  _studentList[i].id.toString(): _studentList[i].status,
+                };
+                data.add(statuses);
+                // print(
+                //   '${_studentList[i].id} - ${_studentList[i].studentId} - ${_studentList[i].status}',
+                // );
+              }
+              // print(data);
+              API.updateAttend(data).then((value) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      value,
+                      textAlign: TextAlign.center,
+                    ),
+                    duration: const Duration(seconds: 3),
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.deepPurple,
+                  ),
+                );
+              });
+
+              // post data to API
             },
             icon: const Icon(
               Icons.save,
@@ -76,14 +94,13 @@ class _AttendListPageState extends State<AttendListPage> {
         itemCount: _studentList.length,
         itemBuilder: (context, index) {
           return StudentWidget(
-            box: StudentData(
-              id: _studentList[index].id,
-              //attendDate: _studentList[index].attendDate,
-              status: _studentList[index].status,
-              studentId: _studentList[index].studentId,
-              studentName: _studentList[index].studentName,
-            ),
+            box: _studentList[index],
             index: index,
+            onChanged: (int index, String status) {
+              setState(() {
+                _studentList[index].status = status;
+              });
+            },
           );
         },
       ),
