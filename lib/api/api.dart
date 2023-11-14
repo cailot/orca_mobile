@@ -2,16 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter_first_hello_world/model/clazz_data.dart';
 import 'package:flutter_first_hello_world/model/student_data.dart';
+import 'package:flutter_first_hello_world/model/teacher_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
 class API {
-  static const kHost = 'http://127.0.0.1:8080/api/';
+  static const kHost = 'http://10.1.1.33:8080/api/';
   // static const kHost =
   //     'http://crispy-space-garbanzo-g44pg7p9w643wp54-8080.app.github.dev/api/';
   static const kClassList = '${kHost}clazzList/';
   static const kAttendList = '${kHost}attendList/';
   static const kUpdateAttend = '${kHost}updateAttend';
+  static const kGetTeacher = '${kHost}getTeacher/';
 
   // retrieve Class List
   static Future<List<ClazzData>> getClazzList(int clazzId) async {
@@ -31,6 +33,7 @@ class API {
         return <ClazzData>[];
       }
     } catch (e) {
+      print(e.toString());
       Fluttertoast.showToast(
         msg: e.toString(),
       );
@@ -91,4 +94,59 @@ class API {
       return e.toString();
     }
   }
+
+  // retrieve Teacher
+  static Future<TeacherData> getTeacher(int teacherId) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          API.kGetTeacher + teacherId.toString(),
+        ),
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseBody = jsonDecode(response.body);
+        final TeacherData teacher = TeacherData.fromJson(responseBody);
+        return teacher;
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Error: ${response.statusCode} - Please try again',
+        );
+        throw Exception('Failed to load teacher');
+      }
+    } catch (e) {
+      // print(e.toString());
+      Fluttertoast.showToast(
+        msg: e.toString(),
+      );
+      throw Exception('Failed to load teacher');
+    }
+  }
+
+  // update Teacher
+  static Future<String> updateTeacher(TeacherData teacher) async {
+    // try {
+    //   final response = await http.get(
+    //     Uri.parse(
+    //       API.kGetTeacher + teacherId.toString(),
+    //     ),
+    //   );
+    //   if (response.statusCode == 200) {
+    //     final TeacherData teacher = jsonDecode(response.body);
+    //     return teacher;
+    //   } else {
+    //     Fluttertoast.showToast(
+    //       msg: 'Error: ${response.statusCode} - Please try again',
+    //     );
+    //     throw Exception('Failed to load teacher');
+    //   }
+    // } catch (e) {
+    //   print(e.toString());
+    //   Fluttertoast.showToast(
+    //     msg: e.toString(),
+    //   );
+    //   throw Exception('Failed to load teacher');
+    // }
+    return 'Test';
+  }
+
 }

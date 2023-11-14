@@ -18,6 +18,13 @@ class StudentWidget extends StatefulWidget {
 
 class _StudentWidgetState extends State<StudentWidget> {
   bool _isSelected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isSelected = (widget.box.status == 'Y') ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(

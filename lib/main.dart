@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Orca Demo',
           theme: ThemeData(
-            brightness: isDark ? Brightness.dark : Brightness.light,
+            //brightness: isDark ? Brightness.dark : Brightness.light,
             useMaterial3: true,
           ),
           home: const WidgetTree(),

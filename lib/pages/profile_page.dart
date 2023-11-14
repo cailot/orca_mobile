@@ -1,76 +1,109 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_first_hello_world/api/api.dart';
 import 'package:flutter_first_hello_world/core/constants.dart';
-import 'package:flutter_first_hello_world/core/notifiers.dart';
+import 'package:flutter_first_hello_world/model/teacher_data.dart';
+import 'package:flutter_first_hello_world/pages/profile_edit_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
+  // fetchTeacher() async {
+  //   API.getTeacher(1).then((teacher) {
+  //     print(teacher);
+  //   });
+  // }
+
+  Future<TeacherData> fetchTeacherInfo(int teacherId) async {
+    try {
+      final teacher = await API
+          .getTeacher(teacherId); // Call API method to get teacher info
+      return teacher;
+    } catch (e) {
+      throw Exception('Failed to load teacher info');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Profile',
-            style: TextStyle(
-              color: Colors.white,
+    return FutureBuilder<TeacherData>(
+      future: fetchTeacherInfo(1),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator(); // Loading
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        } else {
+          // once data is fetched, display the data
+          final teacher = snapshot.data;
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text(
+                'Profile',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              backgroundColor: Colors.deepPurple,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const ProfileEditPage();
+                        },
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
-          ),
-          backgroundColor: Colors.deepPurple,
-        ),
-        body: const SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: kDouble40,
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.all(kDouble20),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: kDouble40,
+                  ),
+                  const CircleAvatar(
+                    radius: 70.0,
+                    backgroundImage: AssetImage('images/teacher.png'),
+                  ),
+                  const SizedBox(
+                    height: kDouble20,
+                  ),
+                  buildListTile(Icons.person, '${teacher!.firstName} ${teacher.lastName}'),
+                  buildListTile(Icons.phone_android, teacher.phone),
+                  buildListTile(Icons.home, teacher.address),
+                  buildListTile(Icons.credit_card, teacher.vit),
+                ],
               ),
-              CircleAvatar(
-                radius: 50.0,
-                backgroundImage: AssetImage('images/teacher.png'),
-              ),
-              SizedBox(
-                height: kDouble20,
-              ),
-              ListTile(
-                leading: Icon(Icons.fingerprint),
-                title: Text('js12345'),
-              ),
-              ListTile(
-                leading: Icon(Icons.person),
-                title: Text('James Ahn'),
-              ),
-              ListTile(
-                leading: Icon(Icons.email),
-                title: Text('braybrook@jamesahn.com.au'),
-              ),
-              ListTile(
-                leading: Icon(Icons.phone_android),
-                title: Text('0412 345 678'),
-              ),
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text('123 Main St, Melbourne, VIC 3000'),
-              ),
-              ListTile(
-                leading: Icon(Icons.card_membership),
-                title: Text('12345'),
-              ),
-            ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget buildListTile(IconData icon, String titleText) {
+    return Padding(
+      padding: const EdgeInsets.only(top: kDouble20),
+      child: ListTile(
+        leading: Icon(icon),
+        title: Text(
+          titleText,
+          style: const TextStyle(
+            fontSize: 18,
+            //fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            isDarkMode.value = !isDarkMode.value;
-          },
-          child: ValueListenableBuilder(
-            valueListenable: isDarkMode,
-            builder: (context, isDark, child) {
-              if (isDark) {
-                return const Icon(Icons.light_mode);
-              } else {
-                return const Icon(Icons.dark_mode);
-              }
-            },
-          ),
-        ));
+      ),
+    );
   }
 }

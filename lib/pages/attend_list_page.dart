@@ -49,7 +49,7 @@ class _AttendListPageState extends State<AttendListPage> {
             Navigator.pop(context);
           },
           icon: const Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
             color: Colors.white,
           ),
         ),
