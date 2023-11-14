@@ -12,7 +12,7 @@ class WidgetTree extends StatefulWidget {
 class _WidgetTreeState extends State<WidgetTree> {
   List<Widget> screens = [
     const ClazzListPage(teacherId: 1),
-    const ProfilePage(),
+    ProfilePage(teacherId: 1),
   ];
 
   int currentPage = 0;

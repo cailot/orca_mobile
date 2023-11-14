@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_first_hello_world/core/constants.dart';
+import 'package:flutter_first_hello_world/model/teacher_data.dart';
 
+// ignore: must_be_immutable
 class ProfileEditPage extends StatefulWidget {
-  const ProfileEditPage({super.key});
+  const ProfileEditPage({super.key, required this.box});
+
+  final TeacherData box;
 
   @override
   State<ProfileEditPage> createState() => _ProfileEditPageState();
@@ -117,22 +121,22 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 height: kDouble30,
               ),
               // first name
-              buildTextField('First Name', 'James', false),
+              buildTextField('First Name', widget.box.firstName, false),
 
               // last name
-              buildTextField('Last Name', 'Ahn', false),
+              buildTextField('Last Name', widget.box.lastName, false),
 
               // password
-              buildTextField('Password', '**********', true),
+              buildTextField('Password', widget.box.password ?? '********', true),
               // phone
-              buildTextField('Phone', '012 345 678', false),
+              buildTextField('Phone', widget.box.phone, false),
 
               // address
               buildTextField(
-                  'Address', '123 Swanston St, Melbourne, VIC 3000', false),
+                  'Address', widget.box.address, false),
 
               // VIT/WWCC
-              buildTextField('VIT/WWCC', '123445', false),
+              buildTextField('VIT/WWCC', widget.box.vit, false),
             ],
           ),
         ),

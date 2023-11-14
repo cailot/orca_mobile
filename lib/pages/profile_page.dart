@@ -4,8 +4,13 @@ import 'package:flutter_first_hello_world/core/constants.dart';
 import 'package:flutter_first_hello_world/model/teacher_data.dart';
 import 'package:flutter_first_hello_world/pages/profile_edit_page.dart';
 
+// ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  ProfilePage({
+    super.key,
+    required this.teacherId,
+  });
+  int teacherId;
 
   Future<TeacherData> fetchTeacherInfo(int teacherId) async {
     try {
@@ -20,7 +25,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<TeacherData>(
-      future: fetchTeacherInfo(1),
+      future: fetchTeacherInfo(teacherId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator(); // Loading
@@ -28,7 +33,7 @@ class ProfilePage extends StatelessWidget {
           return Text('${snapshot.error}');
         } else {
           // once data is fetched, display the data
-          final teacher = snapshot.data;
+          final TeacherData teacher = snapshot.data ?? TeacherData(id: teacherId, firstName: '', lastName: '', phone: '', address: '', vit: '', email: '');
           return Scaffold(
             appBar: AppBar(
               title: const Text(
@@ -45,7 +50,7 @@ class ProfilePage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const ProfileEditPage();
+                          return ProfileEditPage(box: teacher,);
                         },
                       ),
                     );
@@ -71,7 +76,8 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(
                     height: kDouble20,
                   ),
-                  buildListTile(Icons.person, '${teacher!.firstName} ${teacher.lastName}'),
+                  buildListTile(Icons.person,
+                      '${teacher.firstName} ${teacher.lastName}'),
                   buildListTile(Icons.phone_android, teacher.phone),
                   buildListTile(Icons.home, teacher.address),
                   buildListTile(Icons.credit_card, teacher.vit),

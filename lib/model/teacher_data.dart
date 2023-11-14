@@ -7,6 +7,7 @@ String teacherDataToJson(List<TeacherData> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class TeacherData {
+
   TeacherData(
       {required this.id,
       required this.firstName,
