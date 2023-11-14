@@ -7,12 +7,6 @@ import 'package:flutter_first_hello_world/pages/profile_edit_page.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  // fetchTeacher() async {
-  //   API.getTeacher(1).then((teacher) {
-  //     print(teacher);
-  //   });
-  // }
-
   Future<TeacherData> fetchTeacherInfo(int teacherId) async {
     try {
       final teacher = await API
