@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_first_hello_world/api/api.dart';
 import 'package:flutter_first_hello_world/core/constants.dart';
 import 'package:flutter_first_hello_world/model/teacher_data.dart';
 
@@ -14,6 +15,28 @@ class ProfileEditPage extends StatefulWidget {
 
 class _ProfileEditPageState extends State<ProfileEditPage> {
   bool showPassword = false;
+
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _vitController = TextEditingController();
+
+  var updatedInfo = <String, dynamic>{};
+
+  @override
+  void initState() {
+    super.initState();
+    _firstNameController.text = widget.box.firstName;
+    _lastNameController.text = widget.box.lastName;
+    _passwordController.text =
+        '1234'; //'**********';//widget.box.password ?? '**********';
+    _phoneController.text = widget.box.phone;
+    _addressController.text = widget.box.address;
+    _vitController.text = widget.box.vit;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +49,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         ),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, updatedInfo);
           },
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -37,17 +60,29 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         actions: [
           IconButton(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    'Profile is updated successfully!',
-                    textAlign: TextAlign.center,
+              updatedInfo = {
+                'id': widget.box.id,
+                'firstName': _firstNameController.text.trim(),
+                'lastName': _lastNameController.text.trim(),
+                'password': _passwordController.text.trim(),
+                'phone': _phoneController.text.trim(),
+                'address': _addressController.text.trim(),
+                'vit': _vitController.text.trim()
+              };
+              API.updateTeacher(updatedInfo).then((value) {
+                //print(value);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      value,
+                      textAlign: TextAlign.center,
+                    ),
+                    duration: const Duration(seconds: 3),
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.deepPurple,
                   ),
-                  duration: Duration(seconds: 3),
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.deepPurple,
-                ),
-              );
+                );
+              });
             },
             icon: const Icon(
               Icons.save,
@@ -121,22 +156,24 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 height: kDouble30,
               ),
               // first name
-              buildTextField('First Name', widget.box.firstName, false),
+              buildTextField(
+                  _firstNameController, 'First Name', widget.box.firstName),
 
               // last name
-              buildTextField('Last Name', widget.box.lastName, false),
+              buildTextField(
+                  _lastNameController, 'Last Name', widget.box.lastName),
 
               // password
-              buildTextField('Password', widget.box.password ?? '********', true),
+              buildPasswordField(_passwordController, 'Password', '********'),
+
               // phone
-              buildTextField('Phone', widget.box.phone, false),
+              buildTextField(_phoneController, 'Phone', widget.box.phone),
 
               // address
-              buildTextField(
-                  'Address', widget.box.address, false),
+              buildTextField(_addressController, 'Address', widget.box.address),
 
               // VIT/WWCC
-              buildTextField('VIT/WWCC', widget.box.vit, false),
+              buildTextField(_vitController, 'VIT/WWCC', widget.box.vit),
             ],
           ),
         ),
@@ -144,14 +181,42 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     );
   }
 
-  Widget buildTextField(String labelText, String hintText, bool isPassword) {
+  Widget buildTextField(
+      TextEditingController controller, String labelText, String contents) {
     return Padding(
-      // padding: const EdgeInsets.only(bottom: kDouble30),
       padding: const EdgeInsets.fromLTRB(kDouble20, 0, kDouble20, kDouble30),
       child: TextField(
-        obscureText: isPassword ? showPassword : false,
+        //obscureText: isPassword ? true : showPassword,
+        controller: controller,
         decoration: InputDecoration(
-          suffixIcon: isPassword
+          // suffixIcon: isPassword
+          //     ? IconButton(
+          //         onPressed: () {
+          //           setState(() {
+          //             showPassword = !showPassword;
+          //           });
+          //         },
+          //         icon: const Icon(Icons.remove_red_eye),
+          //         color: Colors.grey,
+          //       )
+          //     : null,
+          contentPadding: const EdgeInsets.only(bottom: kDouble5),
+          labelText: labelText,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+        ),
+      ),
+    );
+  }
+
+  Widget buildPasswordField(
+      TextEditingController controller, String labelText, String contents) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(kDouble20, 0, kDouble20, kDouble30),
+      child: TextField(
+        obscureText: !showPassword,
+        controller: controller,
+        decoration: InputDecoration(
+          suffixIcon: showPassword
               ? IconButton(
                   onPressed: () {
                     setState(() {
@@ -161,16 +226,18 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   icon: const Icon(Icons.remove_red_eye),
                   color: Colors.grey,
                 )
-              : null,
+              : IconButton(
+                  onPressed: () {
+                    setState(() {
+                      showPassword = !showPassword;
+                    });
+                  },
+                  icon: const Icon(Icons.remove_red_eye_outlined),
+                  color: Colors.grey,
+                ),
           contentPadding: const EdgeInsets.only(bottom: kDouble5),
           labelText: labelText,
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          hintText: hintText,
-          hintStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
         ),
       ),
     );

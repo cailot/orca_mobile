@@ -14,6 +14,7 @@ class API {
   static const kAttendList = '${kHost}attendList/';
   static const kUpdateAttend = '${kHost}updateAttend';
   static const kGetTeacher = '${kHost}getTeacher/';
+  static const kUpdateTeacher = '${kHost}updateTeacher/';
 
   // retrieve Class List
   static Future<List<ClazzData>> getClazzList(int clazzId) async {
@@ -71,7 +72,7 @@ class API {
   static Future<String> updateAttend(List<Map<String, dynamic>> data) async {
     try {
       String jsonData = jsonEncode(data);
-      final response = await http.post(
+      final response = await http.put(
         headers: {"Content-Type": "application/json"},
         body: jsonData,
         Uri.parse(
@@ -123,30 +124,31 @@ class API {
   }
 
   // update Teacher
-  static Future<String> updateTeacher(TeacherData teacher) async {
-    // try {
-    //   final response = await http.get(
-    //     Uri.parse(
-    //       API.kGetTeacher + teacherId.toString(),
-    //     ),
-    //   );
-    //   if (response.statusCode == 200) {
-    //     final TeacherData teacher = jsonDecode(response.body);
-    //     return teacher;
-    //   } else {
-    //     Fluttertoast.showToast(
-    //       msg: 'Error: ${response.statusCode} - Please try again',
-    //     );
-    //     throw Exception('Failed to load teacher');
-    //   }
-    // } catch (e) {
-    //   print(e.toString());
-    //   Fluttertoast.showToast(
-    //     msg: e.toString(),
-    //   );
-    //   throw Exception('Failed to load teacher');
-    // }
-    return 'Test';
+  static Future<String> updateTeacher(Map<String, dynamic> teacher) async {
+    try {
+      String jsonData = jsonEncode(teacher);
+      final response = await http.put(
+        headers: {"Content-Type": "application/json"},
+        body: jsonData,
+        Uri.parse(
+          API.kUpdateTeacher,
+        ),
+      );
+      if (response.statusCode == 200) {
+        String resMessage = jsonDecode(response.body);
+        return resMessage;
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Error: ${response.statusCode} - Please try again',
+        );
+        return response.body.toString();
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+      );
+      return e.toString();
+    }
   }
 
 }

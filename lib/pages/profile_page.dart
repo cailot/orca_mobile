@@ -5,13 +5,18 @@ import 'package:flutter_first_hello_world/model/teacher_data.dart';
 import 'package:flutter_first_hello_world/pages/profile_edit_page.dart';
 
 // ignore: must_be_immutable
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   ProfilePage({
     super.key,
     required this.teacherId,
   });
   int teacherId;
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   Future<TeacherData> fetchTeacherInfo(int teacherId) async {
     try {
       final teacher = await API
@@ -25,7 +30,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<TeacherData>(
-      future: fetchTeacherInfo(teacherId),
+      future: fetchTeacherInfo(widget.teacherId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator(); // Loading
@@ -33,7 +38,15 @@ class ProfilePage extends StatelessWidget {
           return Text('${snapshot.error}');
         } else {
           // once data is fetched, display the data
-          final TeacherData teacher = snapshot.data ?? TeacherData(id: teacherId, firstName: '', lastName: '', phone: '', address: '', vit: '', email: '');
+          final TeacherData teacher = snapshot.data ??
+              TeacherData(
+                  id: widget.teacherId,
+                  firstName: '',
+                  lastName: '',
+                  phone: '',
+                  address: '',
+                  vit: '',
+                  email: '');
           return Scaffold(
             appBar: AppBar(
               title: const Text(
@@ -50,10 +63,20 @@ class ProfilePage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return ProfileEditPage(box: teacher,);
+                          return ProfileEditPage(
+                            box: teacher,
+                          );
                         },
                       ),
-                    );
+                    ).then((value) {
+                      setState(() {
+                        teacher.firstName = value['firstName'] ?? '';
+                        teacher.lastName = value['lastName'] ?? '';
+                        teacher.phone = value['phone'] ?? '';
+                        teacher.address = value['address'] ?? '';
+                        teacher.vit = value['vit'] ?? '';
+                      });
+                    });
                   },
                   icon: const Icon(
                     Icons.edit,
@@ -76,8 +99,8 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(
                     height: kDouble20,
                   ),
-                  buildListTile(Icons.person,
-                      '${teacher.firstName} ${teacher.lastName}'),
+                  buildListTile(
+                      Icons.person, '${teacher.firstName} ${teacher.lastName}'),
                   buildListTile(Icons.phone_android, teacher.phone),
                   buildListTile(Icons.home, teacher.address),
                   buildListTile(Icons.credit_card, teacher.vit),

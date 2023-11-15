@@ -34,7 +34,6 @@ class _AttendListPageState extends State<AttendListPage> {
 
   @override
   Widget build(BuildContext context) {
-    // double hWidth = MediaQuery.of(context).size.width * 0.5;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -80,8 +79,6 @@ class _AttendListPageState extends State<AttendListPage> {
                   ),
                 );
               });
-
-              // post data to API
             },
             icon: const Icon(
               Icons.save,
