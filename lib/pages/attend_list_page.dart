@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_hello_world/api/api.dart';
-import 'package:flutter_first_hello_world/model/clazz_data.dart';
-import 'package:flutter_first_hello_world/model/student_data.dart';
-import 'package:flutter_first_hello_world/widget/student_widget.dart';
+import 'package:flutter_james_an_college/api/api.dart';
+import 'package:flutter_james_an_college/model/clazz_data.dart';
+import 'package:flutter_james_an_college/model/student_data.dart';
+import 'package:flutter_james_an_college/widget/student_widget.dart';
 
 class AttendListPage extends StatefulWidget {
   const AttendListPage({

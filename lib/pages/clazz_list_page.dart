@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_hello_world/api/api.dart';
-import 'package:flutter_first_hello_world/model/clazz_data.dart';
-import 'package:flutter_first_hello_world/widget/clazz_widget.dart';
+import 'package:flutter_james_an_college/api/api.dart';
+import 'package:flutter_james_an_college/model/clazz_data.dart';
+import 'package:flutter_james_an_college/widget/clazz_widget.dart';
 
 class ClazzListPage extends StatefulWidget {
   const ClazzListPage({super.key, required this.teacherId});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_hello_world/model/clazz_data.dart';
-import 'package:flutter_first_hello_world/core/constants.dart';
-import 'package:flutter_first_hello_world/pages/attend_list_page.dart';
+import 'package:flutter_james_an_college/model/clazz_data.dart';
+import 'package:flutter_james_an_college/core/constants.dart';
+import 'package:flutter_james_an_college/pages/attend_list_page.dart';
 
 class ClazzWidget extends StatelessWidget {
   const ClazzWidget({

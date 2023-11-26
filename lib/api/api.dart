@@ -1,21 +1,20 @@
 import 'dart:convert';
 
-import 'package:flutter_first_hello_world/model/clazz_data.dart';
-import 'package:flutter_first_hello_world/model/student_data.dart';
-import 'package:flutter_first_hello_world/model/teacher_data.dart';
+import 'package:flutter_james_an_college/model/clazz_data.dart';
+import 'package:flutter_james_an_college/model/student_data.dart';
+import 'package:flutter_james_an_college/model/teacher_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
 class API {
-  static const kHost = 'http://10.1.1.33:8080/api/';
-  // static const kHost =
-  //     'http://crispy-space-garbanzo-g44pg7p9w643wp54-8080.app.github.dev/api/';
+  // static const kHost = 'http://10.1.1.33:8080/api/';
+  static const kHost = 'http://127.0.0.1/8080/api/';
   static const kClassList = '${kHost}clazzList/';
   static const kAttendList = '${kHost}attendList/';
   static const kUpdateAttend = '${kHost}updateAttend';
   static const kGetTeacher = '${kHost}getTeacher/';
   static const kUpdateTeacher = '${kHost}updateTeacher/';
-
+  static const kteacherLogin = '${kHost}teacherLogin/';
   // retrieve Class List
   static Future<List<ClazzData>> getClazzList(int clazzId) async {
     try {
@@ -150,5 +149,37 @@ class API {
       return e.toString();
     }
   }
+
+  // login Teacher
+  static Future<String> loginTeacher(Map<String, dynamic> info) async {
+    try {
+      String jsonData = jsonEncode(info);
+      final response = await http.put(
+        headers: {"Content-Type": "application/json"},
+        body: jsonData,
+        Uri.parse(
+          API.kteacherLogin,
+        ),
+      );
+      if (response.statusCode == 200) {
+        String resMessage = jsonDecode(response.body);
+        Fluttertoast.showToast(
+          msg: 'User Login Success',
+        );
+        return resMessage;
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Error: ${response.statusCode} - Please try again',
+        );
+        return response.body.toString();
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+      );
+      return e.toString();
+    }
+  }
+
 
 }

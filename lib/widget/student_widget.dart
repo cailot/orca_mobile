@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_hello_world/model/student_data.dart';
+import 'package:flutter_james_an_college/model/student_data.dart';
 
 class StudentWidget extends StatefulWidget {
   const StudentWidget(

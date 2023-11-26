@@ -1,5 +1,5 @@
-name: flutter_first_hello_world
-description: A new Flutter project.
+name: flutter_james_an_college
+description: James An College
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -37,11 +37,22 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.1.0
   fluttertoast: ^8.2.2
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.11.0
+  flutter_app_name: ^0.1.0
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "images/icon.png"
+  min_sdk_android: 19
+
+flutter_app_name:
+  name: "Jamws An College"
+  #
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

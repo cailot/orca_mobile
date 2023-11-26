@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_hello_world/pages/clazz_list_page.dart';
-import 'package:flutter_first_hello_world/pages/profile_page.dart';
+import 'package:flutter_james_an_college/authentication/login.dart';
+import 'package:flutter_james_an_college/pages/profile_page.dart';
+import 'package:flutter_james_an_college/pages/clazz_list_page.dart';
+
 
 class WidgetTree extends StatefulWidget {
   const WidgetTree({super.key});
@@ -13,6 +15,7 @@ class _WidgetTreeState extends State<WidgetTree> {
   List<Widget> screens = [
     const ClazzListPage(teacherId: 1),
     ProfilePage(teacherId: 1),
+    LoginPage()
   ];
 
   int currentPage = 0;
@@ -30,10 +33,22 @@ class _WidgetTreeState extends State<WidgetTree> {
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
+           NavigationDestination(
+            icon: Icon(Icons.logout),
+            label: 'Sign Out',
+          ),
         ],
         selectedIndex: currentPage,
         onDestinationSelected: (int value) {
           setState(() {
+            if(value == 2){ // back to login page
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                ),
+              );
+            }
             currentPage = value;
           });
         },

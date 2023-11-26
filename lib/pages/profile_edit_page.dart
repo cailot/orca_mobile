@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_hello_world/api/api.dart';
-import 'package:flutter_first_hello_world/core/constants.dart';
-import 'package:flutter_first_hello_world/model/teacher_data.dart';
+import 'package:flutter_james_an_college/api/api.dart';
+import 'package:flutter_james_an_college/core/constants.dart';
+import 'package:flutter_james_an_college/model/teacher_data.dart';
 
 // ignore: must_be_immutable
 class ProfileEditPage extends StatefulWidget {
